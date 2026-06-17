@@ -151,12 +151,265 @@ def reporte_maestros():
 # PAGINA ALUMNOS
 @app.route('/alumnos')
 def alumnos():
-    return "Modulo Alumnos"
+    return render_template('alumnos.html')
+
+# GUARDAR ALUMNO
+@app.route('/guardar_alumno', methods=['POST'])
+def guardar_alumno():
+
+    matricula = request.form['matricula']
+    nombre = request.form['nombre']
+    carrera = request.form['carrera']
+    semestre = request.form['semestre']
+    correo = request.form['correo']
+
+    db.alumnos.insert_one({
+        "matricula": matricula,
+        "nombre": nombre,
+        "carrera": carrera,
+        "semestre": semestre,
+        "correo": correo
+    })
+
+    return """
+    <h2>Alumno guardado correctamente</h2>
+
+    <a href='/alumnos'>
+        <button>Regresar</button>
+    </a>
+    """
+
+# BUSCAR ALUMNO
+@app.route('/buscar_alumno', methods=['POST'])
+def buscar_alumno():
+
+    matricula = request.form['matricula']
+
+    alumno = db.alumnos.find_one({
+        "matricula": matricula
+    })
+
+    if alumno:
+        return f"""
+        <h2>Alumno Encontrado</h2>
+
+        Matricula: {alumno['matricula']} <br><br>
+        Nombre: {alumno['nombre']} <br><br>
+        Carrera: {alumno['carrera']} <br><br>
+        Semestre: {alumno['semestre']} <br><br>
+        Correo: {alumno['correo']} <br><br>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Alumno no encontrado</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # ELIMINAR ALUMNO
+@app.route('/eliminar_alumno', methods=['POST'])
+def eliminar_alumno():
+
+    matricula = request.form['matricula']
+
+    resultado = db.alumnos.delete_one({
+        "matricula": matricula
+    })
+
+    if resultado.deleted_count > 0:
+        return """
+        <h2>Alumno eliminado correctamente</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Alumno no encontrado</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # REPORTE DE ALUMNOS
+@app.route('/reporte_alumnos')
+def reporte_alumnos():
+
+    alumnos = db.alumnos.find()
+
+    tabla = """
+    <h1>Reporte de Alumnos</h1>
+
+    <table border="1">
+        <tr>
+            <th>Matricula</th>
+            <th>Nombre</th>
+            <th>Carrera</th>
+            <th>Semestre</th>
+            <th>Correo</th>
+        </tr>
+    """
+
+    for alumno in alumnos:
+        tabla += f"""
+        <tr>
+            <td>{alumno['matricula']}</td>
+            <td>{alumno['nombre']}</td>
+            <td>{alumno['carrera']}</td>
+            <td>{alumno['semestre']}</td>
+            <td>{alumno['correo']}</td>
+        </tr>
+        """
+
+    tabla += """
+    </table>
+
+    <br><br>
+
+    <a href='/alumnos'>
+        <button>Regresar</button>
+    </a>
+    """
+
+    return tabla
 
 # PAGINA MATERIAS
 @app.route('/materias')
 def materias():
-    return "Modulo Materias"
+    return render_template('materias.html')
+
+# GUARDAR MATERIA
+@app.route('/guardar_materia', methods=['POST'])
+def guardar_materia():
+
+    clave = request.form['clave']
+    nombre = request.form['nombre']
+    creditos = request.form['creditos']
+    semestre = request.form['semestre']
+
+    db.materias.insert_one({
+        "clave": clave,
+        "nombre": nombre,
+        "creditos": creditos,
+        "semestre": semestre
+    })
+
+    return """
+    <h2>Materia guardada correctamente</h2>
+
+    <a href='/materias'>
+        <button>Regresar</button>
+    </a>
+    """
+
+# BUSCAR MATERIA
+@app.route('/buscar_materia', methods=['POST'])
+def buscar_materia():
+
+    clave = request.form['clave']
+
+    materia = db.materias.find_one({
+        "clave": clave
+    })
+
+    if materia:
+        return f"""
+        <h2>Materia Encontrada</h2>
+
+        Clave: {materia['clave']} <br><br>
+        Nombre: {materia['nombre']} <br><br>
+        Creditos: {materia['creditos']} <br><br>
+        Semestre: {materia['semestre']} <br><br>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Materia no encontrada</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # ELIMINAR MATERIA
+@app.route('/eliminar_materia', methods=['POST'])
+def eliminar_materia():
+
+    clave = request.form['clave']
+
+    resultado = db.materias.delete_one({
+        "clave": clave
+    })
+
+    if resultado.deleted_count > 0:
+        return """
+        <h2>Materia eliminada correctamente</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Materia no encontrada</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # REPORTE DE MATERIAS
+@app.route('/reporte_materias')
+def reporte_materias():
+
+    materias = db.materias.find()
+
+    tabla = """
+    <h1>Reporte de Materias</h1>
+
+    <table border="1">
+        <tr>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Creditos</th>
+            <th>Semestre</th>
+        </tr>
+    """
+
+    for materia in materias:
+        tabla += f"""
+        <tr>
+            <td>{materia['clave']}</td>
+            <td>{materia['nombre']}</td>
+            <td>{materia['creditos']}</td>
+            <td>{materia['semestre']}</td>
+        </tr>
+        """
+
+    tabla += """
+    </table>
+
+    <br><br>
+
+    <a href='/materias'>
+        <button>Regresar</button>
+    </a>
+    """
+
+    return tabla
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True)

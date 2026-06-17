@@ -1,77 +1,103 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Materias</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Registro de Materias</h1>
+{% block content %}
 
-    <h3>Buscar Materia</h3>
+<h1>Registro de Materias</h1>
 
-    <form action="/buscar_materia" method="POST">
+<h3>Buscar Materia</h3>
 
-        <label>Clave:</label>
-        <input type="text" name="clave">
+<form action="/buscar_materia" method="POST">
 
-        <button type="submit">Buscar</button>
+    <label>Clave:</label>
+    <input type="text" name="clave">
 
-    </form>
+    <button type="submit">Buscar</button>
 
-    <hr>
+</form>
 
-    <h3>Eliminar Materia</h3>
+<hr>
 
-    <form action="/eliminar_materia" method="POST">
+<h3>Modificar Materia</h3>
 
-        <label>Clave:</label>
-        <input type="text" name="clave">
+<form action="/modificar_materia" method="POST">
 
-        <button type="submit">Eliminar</button>
-
-    </form>
-
-    <hr>
-
-    <h3>Guardar Materia</h3>
-
-    <form action="/guardar_materia" method="POST">
-
-        <label>Clave:</label>
-        <input type="text" name="clave">
-
-        <br><br>
-
-        <label>Nombre:</label>
-        <input type="text" name="nombre">
-
-        <br><br>
-
-        <label>Creditos:</label>
-        <input type="text" name="creditos">
-
-        <br><br>
-
-        <label>Semestre:</label>
-        <input type="text" name="semestre">
-
-        <br><br>
-
-        <button type="submit">Guardar</button>
-
-    </form>
-
-    <br>
-
-    <a href="/reporte_materias">
-        <button>Reporte de Materias</button>
-    </a>
+    <label>Clave:</label>
+    <input type="text" name="clave">
 
     <br><br>
 
-    <a href="/">
-        <button>Regresar</button>
-    </a>
+    <label>Nuevo Nombre:</label>
+    <input type="text" name="nombre">
 
-</body>
-</html>
+    <br><br>
+
+    <label>Nuevos Creditos:</label>
+    <input type="text" name="creditos">
+
+    <br><br>
+
+    <label>Nuevo Semestre:</label>
+    <input type="text" name="semestre">
+
+    <br><br>
+
+    <button type="submit">Modificar</button>
+
+</form>
+
+<hr>
+
+<h3>Eliminar Materia</h3>
+
+<form action="/eliminar_materia" method="POST">
+
+    <label>Clave:</label>
+    <input type="text" name="clave">
+
+    <button type="submit">Eliminar</button>
+
+</form>
+
+<hr>
+
+<h3>Guardar Materia</h3>
+
+<form action="/guardar_materia" method="POST">
+
+    <label>Clave:</label>
+    <input type="text" name="clave">
+
+    <br><br>
+
+    <label>Nombre:</label>
+    <input type="text" name="nombre">
+
+    <br><br>
+
+    <label>Creditos:</label>
+    <input type="text" name="creditos">
+
+    <br><br>
+
+    <label>Semestre:</label>
+    <input type="text" name="semestre">
+
+    <br><br>
+
+    <button type="submit">Guardar</button>
+
+</form>
+
+<br>
+
+<a href="/reporte_materias">
+    <button>Reporte de Materias</button>
+</a>
+
+<br><br>
+
+<a href="/">
+    <button>Regresar</button>
+</a>
+
+{% endblock %}

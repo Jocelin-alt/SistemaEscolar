@@ -1,27 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sistema Escolar</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Sistema Escolar</h1>
+{% block content %}
 
-    <a href="/maestros">
-        <button>Maestros</button>
-    </a>
+<h2>Menu Principal</h2>
 
-    <br><br>
+<a href="/maestros">
+    <button>Maestros</button>
+</a>
 
-    <a href="/alumnos">
-        <button>Alumnos</button>
-    </a>
+<br><br>
 
-    <br><br>
+<a href="/alumnos">
+    <button>Alumnos</button>
+</a>
 
-    <a href="/materias">
-        <button>Materias</button>
-    </a>
+<br><br>
 
-</body>
-</html>
+<a href="/materias">
+    <button>Materias</button>
+</a>
+
+{% endblock %}

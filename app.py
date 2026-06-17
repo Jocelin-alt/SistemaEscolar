@@ -30,6 +30,19 @@ def guardar_maestro():
     telefono = request.form['telefono']
     especialidad = request.form['especialidad']
 
+    # VALIDACION
+    if (numero_empleado == "" or nombre == "" or
+        correo == "" or telefono == "" or
+        especialidad == ""):
+
+        return """
+        <h2>Todos los campos son obligatorios</h2>
+
+        <a href='/maestros'>
+            <button>Regresar</button>
+        </a>
+        """
+
     db.maestros.insert_one({
         "numero_empleado": numero_empleado,
         "nombre": nombre,
@@ -105,6 +118,47 @@ def eliminar_maestro():
             <button>Regresar</button>
         </a>
         """
+    
+    # MODIFICAR MAESTRO
+@app.route('/modificar_maestro', methods=['POST'])
+def modificar_maestro():
+
+    numero_empleado = request.form['numero_empleado']
+    nombre = request.form['nombre']
+    correo = request.form['correo']
+    telefono = request.form['telefono']
+    especialidad = request.form['especialidad']
+
+    resultado = db.maestros.update_one(
+        {"numero_empleado": numero_empleado},
+        {
+            "$set": {
+                "nombre": nombre,
+                "correo": correo,
+                "telefono": telefono,
+                "especialidad": especialidad
+            }
+        }
+    )
+
+    if resultado.modified_count > 0:
+        return """
+        <h2>Maestro modificado correctamente</h2>
+
+        <a href='/maestros'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Maestro no encontrado o no hubo cambios</h2>
+
+        <a href='/maestros'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+
 
 # REPORTE DE MAESTROS
 @app.route('/reporte_maestros')
@@ -163,6 +217,19 @@ def guardar_alumno():
     semestre = request.form['semestre']
     correo = request.form['correo']
 
+    # VALIDACION
+    if (matricula == "" or nombre == "" or
+        carrera == "" or semestre == "" or
+        correo == ""):
+
+        return """
+        <h2>Todos los campos son obligatorios</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+
     db.alumnos.insert_one({
         "matricula": matricula,
         "nombre": nombre,
@@ -178,39 +245,6 @@ def guardar_alumno():
         <button>Regresar</button>
     </a>
     """
-
-# BUSCAR ALUMNO
-@app.route('/buscar_alumno', methods=['POST'])
-def buscar_alumno():
-
-    matricula = request.form['matricula']
-
-    alumno = db.alumnos.find_one({
-        "matricula": matricula
-    })
-
-    if alumno:
-        return f"""
-        <h2>Alumno Encontrado</h2>
-
-        Matricula: {alumno['matricula']} <br><br>
-        Nombre: {alumno['nombre']} <br><br>
-        Carrera: {alumno['carrera']} <br><br>
-        Semestre: {alumno['semestre']} <br><br>
-        Correo: {alumno['correo']} <br><br>
-
-        <a href='/alumnos'>
-            <button>Regresar</button>
-        </a>
-        """
-    else:
-        return """
-        <h2>Alumno no encontrado</h2>
-
-        <a href='/alumnos'>
-            <button>Regresar</button>
-        </a>
-        """
     
     # ELIMINAR ALUMNO
 @app.route('/eliminar_alumno', methods=['POST'])
@@ -233,6 +267,45 @@ def eliminar_alumno():
     else:
         return """
         <h2>Alumno no encontrado</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # MODIFICAR ALUMNO
+@app.route('/modificar_alumno', methods=['POST'])
+def modificar_alumno():
+
+    matricula = request.form['matricula']
+    nombre = request.form['nombre']
+    carrera = request.form['carrera']
+    semestre = request.form['semestre']
+    correo = request.form['correo']
+
+    resultado = db.alumnos.update_one(
+        {"matricula": matricula},
+        {
+            "$set": {
+                "nombre": nombre,
+                "carrera": carrera,
+                "semestre": semestre,
+                "correo": correo
+            }
+        }
+    )
+
+    if resultado.modified_count > 0:
+        return """
+        <h2>Alumno modificado correctamente</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Alumno no encontrado o no hubo cambios</h2>
 
         <a href='/alumnos'>
             <button>Regresar</button>
@@ -295,6 +368,18 @@ def guardar_materia():
     creditos = request.form['creditos']
     semestre = request.form['semestre']
 
+    # VALIDACION
+    if (clave == "" or nombre == "" or
+        creditos == "" or semestre == ""):
+
+        return """
+        <h2>Todos los campos son obligatorios</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+
     db.materias.insert_one({
         "clave": clave,
         "nombre": nombre,
@@ -309,38 +394,6 @@ def guardar_materia():
         <button>Regresar</button>
     </a>
     """
-
-# BUSCAR MATERIA
-@app.route('/buscar_materia', methods=['POST'])
-def buscar_materia():
-
-    clave = request.form['clave']
-
-    materia = db.materias.find_one({
-        "clave": clave
-    })
-
-    if materia:
-        return f"""
-        <h2>Materia Encontrada</h2>
-
-        Clave: {materia['clave']} <br><br>
-        Nombre: {materia['nombre']} <br><br>
-        Creditos: {materia['creditos']} <br><br>
-        Semestre: {materia['semestre']} <br><br>
-
-        <a href='/materias'>
-            <button>Regresar</button>
-        </a>
-        """
-    else:
-        return """
-        <h2>Materia no encontrada</h2>
-
-        <a href='/materias'>
-            <button>Regresar</button>
-        </a>
-        """
     
     # ELIMINAR MATERIA
 @app.route('/eliminar_materia', methods=['POST'])
@@ -363,6 +416,43 @@ def eliminar_materia():
     else:
         return """
         <h2>Materia no encontrada</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    
+    # MODIFICAR MATERIA
+@app.route('/modificar_materia', methods=['POST'])
+def modificar_materia():
+
+    clave = request.form['clave']
+    nombre = request.form['nombre']
+    creditos = request.form['creditos']
+    semestre = request.form['semestre']
+
+    resultado = db.materias.update_one(
+        {"clave": clave},
+        {
+            "$set": {
+                "nombre": nombre,
+                "creditos": creditos,
+                "semestre": semestre
+            }
+        }
+    )
+
+    if resultado.modified_count > 0:
+        return """
+        <h2>Materia modificada correctamente</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Materia no encontrada o no hubo cambios</h2>
 
         <a href='/materias'>
             <button>Regresar</button>
@@ -410,6 +500,6 @@ def reporte_materias():
     return tabla
     
 
-
+ 
 if __name__ == '__main__':
     app.run(debug=True)

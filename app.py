@@ -245,6 +245,40 @@ def guardar_alumno():
         <button>Regresar</button>
     </a>
     """
+
+# BUSCAR ALUMNO
+@app.route('/buscar_alumno', methods=['POST'])
+def buscar_alumno():
+
+    matricula = request.form['matricula']
+
+    alumno = db.alumnos.find_one({
+        "matricula": matricula
+    })
+
+    if alumno:
+        return f"""
+        <h2>Alumno Encontrado</h2>
+
+        Matricula: {alumno['matricula']} <br><br>
+        Nombre: {alumno['nombre']} <br><br>
+        Carrera: {alumno['carrera']} <br><br>
+        Semestre: {alumno['semestre']} <br><br>
+        Correo: {alumno['correo']} <br><br>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Alumno no encontrado</h2>
+
+        <a href='/alumnos'>
+            <button>Regresar</button>
+        </a>
+        """
+    
     
     # ELIMINAR ALUMNO
 @app.route('/eliminar_alumno', methods=['POST'])
@@ -394,6 +428,38 @@ def guardar_materia():
         <button>Regresar</button>
     </a>
     """
+    
+    # BUSCAR MATERIA
+@app.route('/buscar_materia', methods=['POST'])
+def buscar_materia():
+
+    clave = request.form['clave']
+
+    materia = db.materias.find_one({
+        "clave": clave
+    })
+
+    if materia:
+        return f"""
+        <h2>Materia Encontrada</h2>
+
+        Clave: {materia['clave']} <br><br>
+        Nombre: {materia['nombre']} <br><br>
+        Creditos: {materia['creditos']} <br><br>
+        Semestre: {materia['semestre']} <br><br>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
+    else:
+        return """
+        <h2>Materia no encontrada</h2>
+
+        <a href='/materias'>
+            <button>Regresar</button>
+        </a>
+        """
     
     # ELIMINAR MATERIA
 @app.route('/eliminar_materia', methods=['POST'])

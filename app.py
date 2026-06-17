@@ -24,16 +24,18 @@ def maestros():
 @app.route('/guardar_maestro', methods=['POST'])
 def guardar_maestro():
 
-    numero_empleado = request.form['numero_empleado']
+    numero_empleado = request.form['numero_empleado'] .strip()
     nombre = request.form['nombre']
-    correo = request.form['correo']
+    correo = request.form['correo'] + "@gmail.com"
     telefono = request.form['telefono']
     especialidad = request.form['especialidad']
+    turno = request.form['turno']
 
     # VALIDACION
     if (numero_empleado == "" or nombre == "" or
-        correo == "" or telefono == "" or
-        especialidad == ""):
+    correo == "" or telefono == "" or
+    especialidad == "" or turno == ""):
+
 
         return """
         <h2>Todos los campos son obligatorios</h2>
@@ -44,12 +46,13 @@ def guardar_maestro():
         """
 
     db.maestros.insert_one({
-        "numero_empleado": numero_empleado,
-        "nombre": nombre,
-        "correo": correo,
-        "telefono": telefono,
-        "especialidad": especialidad
-    })
+    "numero_empleado": numero_empleado,
+    "nombre": nombre,
+    "correo": correo,
+    "telefono": telefono,
+    "especialidad": especialidad,
+    "turno": turno
+})
 
     return """
     <h2>Maestro guardado correctamente</h2>
@@ -63,7 +66,7 @@ def guardar_maestro():
 @app.route('/buscar_maestro', methods=['POST'])
 def buscar_maestro():
 
-    numero_empleado = request.form['numero_empleado']
+    numero_empleado = request.form['numero_empleado'] .strip()
 
     maestro = db.maestros.find_one({
         "numero_empleado": numero_empleado
@@ -78,7 +81,7 @@ def buscar_maestro():
         Correo: {maestro['correo']} <br><br>
         Telefono: {maestro['telefono']} <br><br>
         Especialidad: {maestro['especialidad']} <br><br>
-
+        Turno: {maestro.get('turno', 'No registrado')} <br><br>
         <a href='/maestros'>
             <button>Regresar</button>
         </a>
@@ -96,7 +99,7 @@ def buscar_maestro():
 @app.route('/eliminar_maestro', methods=['POST'])
 def eliminar_maestro():
 
-    numero_empleado = request.form['numero_empleado']
+    numero_empleado = request.form['numero_empleado'] .strip()
 
     resultado = db.maestros.delete_one({
         "numero_empleado": numero_empleado
@@ -123,23 +126,21 @@ def eliminar_maestro():
 @app.route('/modificar_maestro', methods=['POST'])
 def modificar_maestro():
 
-    numero_empleado = request.form['numero_empleado']
+    numero_empleado = request.form['numero_empleado'] .strip()
     nombre = request.form['nombre']
-    correo = request.form['correo']
+    correo = request.form['correo'] + "@gmail.com"
     telefono = request.form['telefono']
     especialidad = request.form['especialidad']
+    turno = request.form['turno']
 
-    resultado = db.maestros.update_one(
-        {"numero_empleado": numero_empleado},
-        {
-            "$set": {
-                "nombre": nombre,
-                "correo": correo,
-                "telefono": telefono,
-                "especialidad": especialidad
-            }
-        }
-    )
+    resultados = db.maestros.insert_one({
+    "numero_empleado": numero_empleado,
+    "nombre": nombre,
+    "correo": correo,
+    "telefono": telefono,
+    "especialidad": especialidad,
+    "turno": turno
+})
 
     if resultado.modified_count > 0:
         return """
@@ -176,6 +177,7 @@ def reporte_maestros():
             <th>Correo</th>
             <th>Telefono</th>
             <th>Especialidad</th>
+            <th>Turno</th>
         </tr>
     """
 
@@ -187,6 +189,7 @@ def reporte_maestros():
             <td>{maestro['correo']}</td>
             <td>{maestro['telefono']}</td>
             <td>{maestro['especialidad']}</td>
+            <td>{maestro.get('turno', 'No registrado')}</td>
         </tr>
         """
 
@@ -211,17 +214,18 @@ def alumnos():
 @app.route('/guardar_alumno', methods=['POST'])
 def guardar_alumno():
 
-    matricula = request.form['matricula']
+    matricula = request.form['matricula'] 
     nombre = request.form['nombre']
     carrera = request.form['carrera']
     semestre = request.form['semestre']
-    correo = request.form['correo']
+    correo = request.form['correo'] + "@gmail.com"
+    fecha_nacimiento = request.form['fecha_nacimiento']
 
     # VALIDACION
     if (matricula == "" or nombre == "" or
-        carrera == "" or semestre == "" or
-        correo == ""):
-
+    carrera == "" or semestre == "" or
+    correo == "" or fecha_nacimiento == ""):
+        
         return """
         <h2>Todos los campos son obligatorios</h2>
 
@@ -231,13 +235,14 @@ def guardar_alumno():
         """
 
     db.alumnos.insert_one({
-        "matricula": matricula,
-        "nombre": nombre,
-        "carrera": carrera,
-        "semestre": semestre,
-        "correo": correo
-    })
-
+    "matricula": matricula,
+    "nombre": nombre,
+    "carrera": carrera,
+    "semestre": semestre,
+    "correo": correo,
+    "fecha_nacimiento": fecha_nacimiento
+})
+    
     return """
     <h2>Alumno guardado correctamente</h2>
 
@@ -250,8 +255,7 @@ def guardar_alumno():
 @app.route('/buscar_alumno', methods=['POST'])
 def buscar_alumno():
 
-    matricula = request.form['matricula']
-
+    matricula = request.form['matricula'] .strip()
     alumno = db.alumnos.find_one({
         "matricula": matricula
     })
@@ -284,8 +288,7 @@ def buscar_alumno():
 @app.route('/eliminar_alumno', methods=['POST'])
 def eliminar_alumno():
 
-    matricula = request.form['matricula']
-
+    matricula = request.form['matricula'] .strip()
     resultado = db.alumnos.delete_one({
         "matricula": matricula
     })
@@ -311,11 +314,11 @@ def eliminar_alumno():
 @app.route('/modificar_alumno', methods=['POST'])
 def modificar_alumno():
 
-    matricula = request.form['matricula']
+    matricula = request.form['matricula'] .strip()
     nombre = request.form['nombre']
     carrera = request.form['carrera']
     semestre = request.form['semestre']
-    correo = request.form['correo']
+    correo = request.form['correo'] + "@gmail.com"
 
     resultado = db.alumnos.update_one(
         {"matricula": matricula},
@@ -362,8 +365,9 @@ def reporte_alumnos():
             <th>Carrera</th>
             <th>Semestre</th>
             <th>Correo</th>
+            <th>Fecha de Nacimiento</th>
         </tr>
-    """
+    """ 
 
     for alumno in alumnos:
         tabla += f"""
@@ -373,6 +377,7 @@ def reporte_alumnos():
             <td>{alumno['carrera']}</td>
             <td>{alumno['semestre']}</td>
             <td>{alumno['correo']}</td>
+            <td>{alumno.get('fecha_nacimiento', 'No registrada')}</td>
         </tr>
         """
 
@@ -397,10 +402,11 @@ def materias():
 @app.route('/guardar_materia', methods=['POST'])
 def guardar_materia():
 
-    clave = request.form['clave']
+    clave = request.form['clave'] 
     nombre = request.form['nombre']
     creditos = request.form['creditos']
     semestre = request.form['semestre']
+    horas_semanales = request.form['horas_semanales']
 
     # VALIDACION
     if (clave == "" or nombre == "" or
@@ -418,7 +424,8 @@ def guardar_materia():
         "clave": clave,
         "nombre": nombre,
         "creditos": creditos,
-        "semestre": semestre
+        "semestre": semestre,
+        "horas_semanales": horas_semanales
     })
 
     return """
@@ -433,8 +440,7 @@ def guardar_materia():
 @app.route('/buscar_materia', methods=['POST'])
 def buscar_materia():
 
-    clave = request.form['clave']
-
+    clave = request.form['clave'] 
     materia = db.materias.find_one({
         "clave": clave
     })
@@ -465,8 +471,7 @@ def buscar_materia():
 @app.route('/eliminar_materia', methods=['POST'])
 def eliminar_materia():
 
-    clave = request.form['clave']
-
+    clave = request.form['clave'] 
     resultado = db.materias.delete_one({
         "clave": clave
     })
@@ -492,7 +497,7 @@ def eliminar_materia():
 @app.route('/modificar_materia', methods=['POST'])
 def modificar_materia():
 
-    clave = request.form['clave']
+    clave = request.form['clave'] 
     nombre = request.form['nombre']
     creditos = request.form['creditos']
     semestre = request.form['semestre']
@@ -540,6 +545,7 @@ def reporte_materias():
             <th>Nombre</th>
             <th>Creditos</th>
             <th>Semestre</th>
+            <th>Horas Semanales</th>
         </tr>
     """
 
@@ -550,6 +556,8 @@ def reporte_materias():
             <td>{materia['nombre']}</td>
             <td>{materia['creditos']}</td>
             <td>{materia['semestre']}</td>
+            <td>{materia.get('horas_semanales', 'No registradas')}</td>
+            
         </tr>
         """
 

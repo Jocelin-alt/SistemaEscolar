@@ -18,32 +18,49 @@
 
 <form action="/modificar_maestro" method="POST">
 
-    <label>Numero de Empleado:</label>
-    <input type="text" name="numero_empleado">
 
-    <br><br>
+<label>Numero de Empleado:</label>
+<input type="text" name="numero_empleado">
 
-    <label>Nuevo Nombre:</label>
-    <input type="text" name="nombre">
+<br><br>
 
-    <br><br>
+<label>Nuevo Nombre:</label>
+<input type="text" name="nombre">
 
-    <label>Nuevo Correo:</label>
-    <input type="text" name="correo">
+<br><br>
 
-    <br><br>
+<label>Correo:</label>
+<input type="text" name="correo" placeholder="ejemplo">
+<span>@gmail.com</span>
 
-    <label>Nuevo Telefono:</label>
-    <input type="text" name="telefono">
+<br><br>
 
-    <br><br>
+<label>Nuevo Telefono:</label>
+<input type="text" name="telefono">
 
-    <label>Nueva Especialidad:</label>
-    <input type="text" name="especialidad">
+<br><br>
 
-    <br><br>
+<label>Especialidad:</label>
+<select name="especialidad">
+    <option value="Programacion">Programacion</option>
+    <option value="Electronica">Electronica</option>
+    <option value="Bilingue">Bilingue</option>
+    <option value="Recursos Humanos">Recursos Humanos</option>
+</select>
 
-    <button type="submit">Modificar</button>
+
+<br><br>
+
+<label>Nuevo Turno:</label>
+<select name="turno">
+    <option value="Matutino">Matutino</option>
+    <option value="Vespertino">Vespertino</option>
+</select>
+
+<br><br>
+
+<button type="submit">Modificar</button>
+
 
 </form>
 
@@ -63,32 +80,48 @@
 
 <form action="/guardar_maestro" method="POST">
 
-    <label>Numero de Empleado:</label>
-    <input type="text" name="numero_empleado">
 
-    <br><br>
+<label>Numero de Empleado:</label>
+<input type="text" name="numero_empleado">
 
-    <label>Nombre:</label>
-    <input type="text" name="nombre">
+<br><br>
 
-    <br><br>
+<label>Nombre:</label>
+<input type="text" name="nombre">
 
-    <label>Correo:</label>
-    <input type="text" name="correo">
+<br><br>
 
-    <br><br>
+<label>Correo:</label>
+<input type="text" name="correo" placeholder="ejemplo">
+<span>@gmail.com</span>
 
-    <label>Telefono:</label>
-    <input type="text" name="telefono">
+<br><br>
 
-    <br><br>
+<label>Telefono:</label>
+<input type="text" name="telefono">
 
-    <label>Especialidad:</label>
-    <input type="text" name="especialidad">
+<br><br>
 
-    <br><br>
+<label>Especialidad:</label>
+<select name="especialidad">
+    <option value="Programacion">Programacion</option>
+    <option value="Electronica">Electronica</option>
+    <option value="Bilingue">Bilingue</option>
+    <option value="Recursos Humanos">Recursos Humanos</option>
+</select>
 
-    <button type="submit">Guardar</button>
+<br><br>
+
+<label>Turno:</label>
+<select name="turno">
+    <option value="Matutino">Matutino</option>
+    <option value="Vespertino">Vespertino</option>
+</select>
+
+<br><br>
+
+<button type="submit">Guardar</button>
+
 
 </form>
 

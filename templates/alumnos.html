@@ -8,10 +8,12 @@
 
 <form action="/buscar_alumno" method="POST">
 
-    <label>Matricula:</label>
-    <input type="text" name="matricula">
 
-    <button type="submit">Buscar</button>
+<label>Matricula:</label>
+<input type="text" name="matricula">
+
+<button type="submit">Buscar</button>
+
 
 </form>
 
@@ -21,32 +23,56 @@
 
 <form action="/modificar_alumno" method="POST">
 
-    <label>Matricula:</label>
-    <input type="text" name="matricula">
 
-    <br><br>
+<label>Matricula:</label>
+<input type="text" name="matricula">
 
-    <label>Nuevo Nombre:</label>
-    <input type="text" name="nombre">
+<br><br>
 
-    <br><br>
+<label>Nuevo Nombre:</label>
+<input type="text" name="nombre">
 
-    <label>Nueva Carrera:</label>
-    <input type="text" name="carrera">
+<br><br>
 
-    <br><br>
+<label>Carrera:</label>
+<select name="carrera">
+    <option value="Programacion">Programacion</option>
+    <option value="Electronica">Electronica</option>
+    <option value="Bilingue">Bilingue</option>
+    <option value="Recursos Humanos">Recursos Humanos</option>
+</select>
 
-    <label>Nuevo Semestre:</label>
-    <input type="text" name="semestre">
+<br><br>
 
-    <br><br>
+<label>NuevoSemestre:</label>
+<select name="semestre">
+    <option value="1">1° Semestre</option>
+    <option value="2">2° Semestre</option>
+    <option value="3">3° Semestre</option>
+    <option value="4">4° Semestre</option>
+    <option value="5">5° Semestre</option>
+    <option value="6">6° Semestre</option>
+</select>
 
-    <label>Nuevo Correo:</label>
-    <input type="text" name="correo">
 
-    <br><br>
+<br><br>
 
-    <button type="submit">Modificar</button>
+<label>Correo:</label>
+<input type="text" name="correo" placeholder="ejemplo">
+<span>@gmail.com</span>
+
+<br><br>
+
+<label>Nueva Fecha de Nacimiento:</label>
+<input type="date"
+       name="fecha_nacimiento"
+       min="2008-01-01"
+       max="2026-12-31">
+
+<br><br>
+
+<button type="submit">Modificar</button>
+
 
 </form>
 
@@ -56,10 +82,12 @@
 
 <form action="/eliminar_alumno" method="POST">
 
-    <label>Matricula:</label>
-    <input type="text" name="matricula">
 
-    <button type="submit">Eliminar</button>
+<label>Matricula:</label>
+<input type="text" name="matricula">
+
+<button type="submit">Eliminar</button>
+
 
 </form>
 
@@ -69,32 +97,55 @@
 
 <form action="/guardar_alumno" method="POST">
 
-    <label>Matricula:</label>
-    <input type="text" name="matricula">
 
-    <br><br>
+<label>Matricula:</label>
+<input type="text" name="matricula">
 
-    <label>Nombre:</label>
-    <input type="text" name="nombre">
+<br><br>
 
-    <br><br>
+<label>Nombre:</label>
+<input type="text" name="nombre">
 
-    <label>Carrera:</label>
-    <input type="text" name="carrera">
+<br><br>
 
-    <br><br>
+<label>Carrera:</label>
+<select name="carrera">
+    <option value="Programacion">Programacion</option>
+    <option value="Electronica">Electronica</option>
+    <option value="Bilingue">Bilingue</option>
+    <option value="Recursos Humanos">Recursos Humanos</option>
+</select>
 
-    <label>Semestre:</label>
-    <input type="text" name="semestre">
+<br><br>
 
-    <br><br>
+<label>Semestre:</label>
+<select name="semestre">
+    <option value="1">1° Semestre</option>
+    <option value="2">2° Semestre</option>
+    <option value="3">3° Semestre</option>
+    <option value="4">4° Semestre</option>
+    <option value="5">5° Semestre</option>
+    <option value="6">6° Semestre</option>
+</select>
 
-    <label>Correo:</label>
-    <input type="text" name="correo">
+<br><br>
 
-    <br><br>
+<label>Correo:</label>
+<input type="text" name="correo" placeholder="ejemplo">
+<span>@gmail.com</span>
 
-    <button type="submit">Guardar</button>
+<br><br>
+
+<label>Fecha de Nacimiento:</label>
+<input type="date"
+       name="fecha_nacimiento"
+       min="2008-01-01"
+       max="2026-12-31">
+
+<br><br>
+
+<button type="submit">Guardar</button>
+
 
 </form>
 

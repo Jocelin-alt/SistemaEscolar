@@ -45,5 +45,8 @@ Proyecto desarrollado con Flask y MongoDB para la administración de:
 ## Autor
 
 Jocelin Margarita Juárez Ruelas
-<img src="<img width="50" height="70" alt="jocelinJuarez jpg" src="https://github.com/user-attachments/assets/e955fa57-46c6-4b73-8c7c-87e0b8f295d1" />
+
+<p align="center">
+    <img src="<img width="1200" height="1600" alt="jocelinJuarez jpg" src="https://github.com/user-attachments/assets/2c738e73-1ae0-418f-8da4-1513d805781b" />
 " width="150">
+</p>

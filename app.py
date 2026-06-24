@@ -352,7 +352,7 @@ def modificar_alumno():
     # REPORTE DE ALUMNOS
 @app.route('/reporte_alumnos')
 def reporte_alumnos():
-
+    
     alumnos = db.alumnos.find()
 
     tabla = """
@@ -572,8 +572,204 @@ def reporte_materias():
     """
 
     return tabla
-    
 
- 
+# PAGINA GRUPOS
+@app.route('/grupos')
+def grupos():
+    return render_template('grupos.html')
+
+
+# GUARDAR GRUPO
+@app.route('/guardar_grupo', methods=['POST'])
+def guardar_grupo():
+
+    grupo_id = request.form['grupo_id']
+    grupo = request.form['grupo']
+    maestro_id = request.form['maestro_id']
+    maestro_nombre = request.form['maestro_nombre']
+    materia_id = request.form['materia_id']
+    materia_nombre = request.form['materia_nombre']
+    especialidad = request.form['especialidad']
+
+    db.grupos.insert_one({
+        "id": grupo_id,
+        "grupo": grupo,
+        "maestro": {
+            "id": maestro_id,
+            "nombre": maestro_nombre
+        },
+        "materia": {
+            "id": materia_id,
+            "nombre": materia_nombre
+        },
+        "especialidad": especialidad,
+        "alumnos": []
+    })
+
+    return """
+    <h2>Grupo guardado correctamente</h2>
+
+    <a href='/grupos'>
+        <button>Regresar</button>
+    </a>
+    """
+
+
+# REPORTE GRUPOS
+@app.route('/reporte_grupos')
+def reporte_grupos():
+
+    grupos = db.grupos.find()
+
+    tabla = "<h1>Grupos</h1>"
+
+    for grupo in grupos:
+        tabla += f"""
+        <hr>
+        ID Grupo: {grupo['id']} <br><br>
+        Grupo: {grupo['grupo']} <br><br>
+        Maestro: {grupo['maestro']['id']} - {grupo['maestro']['nombre']} <br><br>
+        Materia: {grupo['materia']['id']} - {grupo['materia']['nombre']} <br><br>
+        Especialidad: {grupo['especialidad']} <br><br>
+
+        <a href='/ver_alumnos/{grupo["grupo"]}'>
+            <button>Ver alumnos matriculados</button>
+        </a>
+
+        <br><br>
+        """
+
+    tabla += """
+    <a href='/grupos'>
+        <button>Regresar</button>
+    </a>
+    """
+
+    return tabla
+
+
+# VER ALUMNOS
+@app.route('/ver_alumnos/<grupo_nombre>')
+def ver_alumnos(grupo_nombre):
+
+    grupo = db.grupos.find_one({"grupo": grupo_nombre})
+
+    texto = f"<h1>Alumnos de {grupo_nombre}</h1>"
+
+    if len(grupo["alumnos"]) == 0:
+        texto += "No hay alumnos matriculados <br><br>"
+
+    for alumno in grupo["alumnos"]:
+        texto += f"""
+        Matricula: {alumno['matricula']} <br>
+        Nombre: {alumno['nombre']} <br>
+        Apellido: {alumno['apellido']} <br>
+
+        <a href='/quitar_alumno/{grupo_nombre}/{alumno["matricula"]}'>
+            <button>Quitar</button>
+        </a>
+
+        <br><hr>
+        """
+
+    texto += f"""
+    <a href='/agregar_alumno_grupo/{grupo_nombre}'>
+        <button>Agregar Alumno</button>
+    </a>
+
+    <br><br>
+
+    <a href='/reporte_grupos'>
+        <button>Regresar</button>
+    </a>
+    """
+
+    return texto
+
+
+# FORMULARIO AGREGAR ALUMNO
+@app.route('/agregar_alumno_grupo/<grupo_nombre>')
+def agregar_alumno_grupo(grupo_nombre):
+
+    return f"""
+    <h1>Agregar Alumno a {grupo_nombre}</h1>
+
+    <form action='/guardar_alumno_grupo/{grupo_nombre}' method='POST'>
+
+    Matricula:
+    <input name='matricula'><br><br>
+
+    Nombre:
+    <input name='nombre'><br><br>
+
+    Apellido:
+    <input name='apellido'><br><br>
+
+    <button type='submit'>Guardar</button>
+    </form>
+
+    <br><br>
+
+    <a href='/ver_alumnos/{grupo_nombre}'>
+        <button>Regresar</button>
+    </a>
+    """
+
+
+# GUARDAR ALUMNO EN GRUPO
+@app.route('/guardar_alumno_grupo/<grupo_nombre>', methods=['POST'])
+def guardar_alumno_grupo(grupo_nombre):
+
+    matricula = request.form['matricula']
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+
+    db.grupos.update_one(
+        {"grupo": grupo_nombre},
+        {
+            "$push": {
+                "alumnos": {
+                    "matricula": matricula,
+                    "nombre": nombre,
+                    "apellido": apellido
+                }
+            }
+        }
+    )
+
+    return f"""
+    <h2>Alumno agregado correctamente</h2>
+
+    <a href='/ver_alumnos/{grupo_nombre}'>
+        <button>Regresar</button>
+    </a>
+    """
+
+
+# QUITAR ALUMNO
+@app.route('/quitar_alumno/<grupo_nombre>/<matricula>')
+def quitar_alumno(grupo_nombre, matricula):
+
+    db.grupos.update_one(
+        {"grupo": grupo_nombre},
+        {
+            "$pull": {
+                "alumnos": {
+                    "matricula": matricula
+                }
+            }
+        }
+    )
+
+    return f"""
+    <h2>Alumno quitado correctamente</h2>
+
+    <a href='/ver_alumnos/{grupo_nombre}'>
+        <button>Regresar</button>
+    </a>
+    """
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+

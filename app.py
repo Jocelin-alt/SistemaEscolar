@@ -580,13 +580,21 @@ def grupos():
 @app.route('/guardar_grupo', methods=['POST'])
 def guardar_grupo():
 
-    grupo_id = request.form['grupo_id']
+    grupo_id = request.form['grupo_id'].strip()
     grupo = request.form['grupo']
     maestro_id = request.form['maestro_id']
     maestro_nombre = request.form['maestro_nombre']
     materia_id = request.form['materia_id']
     materia_nombre = request.form['materia_nombre']
     especialidad = request.form['especialidad']
+
+    grupo_existente = db.grupos.find_one({"id": grupo_id})
+
+    if grupo_existente:
+        return """
+        <h2>Ya existe un grupo con ese ID</h2>
+        <a href='/grupos'><button>Regresar</button></a>
+        """
 
     db.grupos.insert_one({
         "id": grupo_id,
@@ -605,10 +613,7 @@ def guardar_grupo():
 
     return """
     <h2>Grupo guardado correctamente</h2>
-
-    <a href='/grupos'>
-        <button>Regresar</button>
-    </a>
+    <a href='/grupos'><button>Regresar</button></a>
     """
 
 
@@ -769,7 +774,7 @@ def quitar_alumno(grupo_nombre, matricula):
 @app.route('/modificar_grupo', methods=['POST'])
 def modificar_grupo():
 
-    grupo_id = request.form['grupo_id']
+    grupo_id = request.form['grupo_id'].strip()
     grupo = request.form['grupo']
     maestro_id = request.form['maestro_id']
     maestro_nombre = request.form['maestro_nombre']
